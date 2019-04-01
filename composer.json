@@ -1,0 +1,19 @@
+{
+    "name": "flex/express",
+    "description": "支持快递鸟、快递100的快递查询SDK",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Flex",
+            "email": "2345@mail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flex\\Express\\": "./src"
+        }
+    }
+}
