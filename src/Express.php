@@ -17,8 +17,8 @@ class Express
 
     /**
      * Express constructor.
-     * @param $app_id
-     * @param $app_key
+     * @param string $app_id
+     * @param string $app_key
      * @param string $type
      * @throws InvalidArgumentException
      */
@@ -72,7 +72,7 @@ class Express
      * @param string $order_code
      * @return array
      * @throws InvalidArgumentException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\HttpException
      */
     public function kdniao($tracking_code, $shipping_code, $order_code = '')
     {
@@ -91,7 +91,7 @@ class Express
      * @param $phone
      * @return array
      * @throws InvalidArgumentException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\HttpException
      */
     public function kuaidi100($tracking_code, $shipping_code, $phone)
     {

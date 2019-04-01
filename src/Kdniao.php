@@ -3,7 +3,9 @@
 
 namespace Flex\Express;
 
+use Flex\Express\Exceptions\HttpException;
 use Flex\Express\Exceptions\InvalidArgumentException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Kdniao extends Express
 {
@@ -15,8 +17,8 @@ class Kdniao extends Express
      * @param string $shipping_code 物流公司编号
      * @param string $order_code 订单编号(选填)
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws InvalidArgumentException
+     * @throws HttpException
      */
     public function track($tracking_code, $shipping_code, $order_code = '')
     {
@@ -43,9 +45,13 @@ class Kdniao extends Express
             'DataSign' => $this->encrypt($requestData, $this->app_key)
         );
 
-        $response = $this->getHttpClient()->request('POST', $this->api, [
-            'form_params' => $post
-        ])->getBody()->getContents();
+        try {
+            $response = $this->getHttpClient()->request('POST', $this->api, [
+                'form_params' => $post
+            ])->getBody()->getContents();
+        } catch (GuzzleException $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return json_decode($response, true);
     }

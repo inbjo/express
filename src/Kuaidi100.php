@@ -3,7 +3,9 @@
 
 namespace Flex\Express;
 
+use Flex\Express\Exceptions\HttpException;
 use Flex\Express\Exceptions\InvalidArgumentException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Kuaidi100 extends Express
 {
@@ -16,7 +18,7 @@ class Kuaidi100 extends Express
      * @param string $phone
      * @return array
      * @throws InvalidArgumentException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws HttpException
      */
     public function track($tracking_code, $shipping_code, $phone = '')
     {
@@ -29,7 +31,7 @@ class Kuaidi100 extends Express
         }
 
         if ($shipping_code == 'shunfeng' && empty($phone)) {
-            throw new InvalidArgumentException('This Order Mobile Can not be empty');
+            throw new InvalidArgumentException('This Order Need PhoneNumber');
         }
 
         $post['customer'] = $this->app_id;
@@ -45,9 +47,13 @@ class Kuaidi100 extends Express
         $post['param'] = json_encode($data);
         $post['sign'] = strtoupper(md5($post['param'] . $this->app_key . $post['customer']));
 
-        $response = $this->getHttpClient()->request('POST', $this->api, [
-            'form_params' => $post
-        ])->getBody()->getContents();
+        try {
+            $response = $this->getHttpClient()->request('POST', $this->api, [
+                'form_params' => $post
+            ])->getBody()->getContents();
+        } catch (GuzzleException $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return json_decode($response, true);
     }
