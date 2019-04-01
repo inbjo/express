@@ -3,6 +3,8 @@
 
 namespace Flex\Express;
 
+use Flex\Express\Exceptions\InvalidArgumentException;
+
 class Kuaidi100 extends Express
 {
     protected $api = 'https://poll.kuaidi100.com/poll/query.do';
@@ -11,12 +13,25 @@ class Kuaidi100 extends Express
      * 快递查询
      * @param string $tracking_code 快递单号
      * @param string $shipping_code 物流公司单号
-     * @param string $mobile 手机号(查顺丰单号需要收件人手机号)
+     * @param string $phone
      * @return array
+     * @throws InvalidArgumentException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function track($tracking_code, $shipping_code, $mobile = '')
+    public function track($tracking_code, $shipping_code, $phone = '')
     {
+        if (empty($tracking_code)) {
+            throw new InvalidArgumentException('TrackingCode Can not be empty');
+        }
+
+        if (empty($shipping_code)) {
+            throw new InvalidArgumentException('ShippingCode Can not be empty');
+        }
+
+        if ($shipping_code == 'shunfeng' && empty($phone)) {
+            throw new InvalidArgumentException('This Order Mobile Can not be empty');
+        }
+
         $post['customer'] = $this->app_id;
         $data = [
             'com' => $shipping_code,
@@ -24,7 +39,7 @@ class Kuaidi100 extends Express
         ];
 
         if (!empty($mobile)) {
-            $data['mobiletelephone'] = $mobile;
+            $data['mobiletelephone'] = $phone;
         }
 
         $post['param'] = json_encode($data);

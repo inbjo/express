@@ -3,6 +3,8 @@
 
 namespace Flex\Express;
 
+use Flex\Express\Exceptions\InvalidArgumentException;
+
 class Kdniao extends Express
 {
     protected $api = 'http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx';
@@ -14,9 +16,18 @@ class Kdniao extends Express
      * @param string $order_code 订单编号(选填)
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws InvalidArgumentException
      */
     public function track($tracking_code, $shipping_code, $order_code = '')
     {
+        if (empty($tracking_code)) {
+            throw new InvalidArgumentException('TrackingCode Can not be empty');
+        }
+
+        if (empty($shipping_code)) {
+            throw new InvalidArgumentException('ShippingCode Can not be empty');
+        }
+
         $requestData = [
             'LogisticCode' => $tracking_code,
             'ShipperCode' => $shipping_code,
