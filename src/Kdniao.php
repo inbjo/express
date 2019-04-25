@@ -5,6 +5,7 @@ namespace Flex\Express;
 
 use Flex\Express\Exceptions\HttpException;
 use Flex\Express\Exceptions\InvalidArgumentException;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Kdniao
@@ -78,6 +79,30 @@ class Kdniao
     private function encrypt($data, $appkey)
     {
         return urlencode(base64_encode(md5($data . $appkey)));
+    }
+
+    /**
+     * @return Client
+     */
+    public function getHttpClient()
+    {
+        return new Client($this->guzzleOptions);
+    }
+
+    /**
+     * @return Client
+     */
+    public function getGuzzleOptions()
+    {
+        return new Client($this->guzzleOptions);
+    }
+
+    /**
+     * @param $options
+     */
+    public function setGuzzleOptions($options)
+    {
+        $this->guzzleOptions = $options;
     }
 
 }
