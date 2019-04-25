@@ -13,6 +13,7 @@ class Kdniao
     protected $api = 'http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx';
     protected $app_id;
     protected $app_key;
+    protected $guzzleOptions = [];
 
     /**
      * Kuaidi100 constructor.

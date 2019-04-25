@@ -13,6 +13,7 @@ class Kuaidi100
     protected $api = 'https://poll.kuaidi100.com/poll/query.do';
     protected $app_id;
     protected $app_key;
+    protected $guzzleOptions = [];
 
     /**
      * Kuaidi100 constructor.
