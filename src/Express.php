@@ -5,15 +5,12 @@ namespace Flex\Express;
 
 
 use Flex\Express\Exceptions\InvalidArgumentException;
-use GuzzleHttp\Client;
 
 class Express
 {
-    protected $api = '';
     protected $type;
     protected $app_id;
     protected $app_key;
-    protected $guzzleOptions = [];
 
     /**
      * Express constructor.
@@ -42,64 +39,36 @@ class Express
     }
 
     /**
-     * @return Client
-     */
-    public function getHttpClient()
-    {
-        return new Client($this->guzzleOptions);
-    }
-
-    /**
-     * @return Client
-     */
-    public function getGuzzleOptions()
-    {
-        return new Client($this->guzzleOptions);
-    }
-
-    /**
-     * @param $options
-     */
-    public function setGuzzleOptions($options)
-    {
-        $this->guzzleOptions = $options;
-    }
-
-    /**
-     * 快递鸟查询
+     * 查询物流
      * @param $tracking_code
      * @param $shipping_code
-     * @param string $order_code
+     * @param array $additional
      * @return array
-     * @throws InvalidArgumentException
      * @throws Exceptions\HttpException
+     * @throws InvalidArgumentException
      */
-    public function kdniao($tracking_code, $shipping_code, $order_code = '')
+    public function track($tracking_code, $shipping_code, $additional = [])
     {
-        if ($this->type != 'kdniao') {
-            throw new InvalidArgumentException('Inconsistent Key Type');
+        if ($this->type == 'kuaidi100') {
+            if (isset($additional['phone'])) {
+                $phone = $additional['phone'];
+            } else {
+                $phone = '';
+            }
+            $express = new Kuaidi100($this->app_id, $this->app_key);
+            return $express->track($tracking_code, $shipping_code, $phone);
         }
 
-        $express = new Kdniao($this->app_id, $this->app_key);
-        return $express->track($tracking_code, $shipping_code, $order_code);
-    }
-
-    /**
-     * 快递100查询
-     * @param $tracking_code
-     * @param $shipping_code
-     * @param $phone
-     * @return array
-     * @throws InvalidArgumentException
-     * @throws Exceptions\HttpException
-     */
-    public function kuaidi100($tracking_code, $shipping_code, $phone)
-    {
-        if ($this->type != 'kuaidi100') {
-            throw new InvalidArgumentException('Inconsistent Key Type');
+        if ($this->type == 'kdniao') {
+            if (isset($additional['order_code'])) {
+                $order_code = $additional['order_code'];
+            } else {
+                $order_code = '';
+            }
+            $express = new Kdniao($this->app_id, $this->app_key);
+            return $express->track($tracking_code, $shipping_code, $order_code);
         }
 
-        $express = new Kuaidi100($this->app_id, $this->app_key);
-        return $express->track($tracking_code, $shipping_code, $phone);
+        return [];
     }
 }

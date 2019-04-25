@@ -7,9 +7,22 @@ use Flex\Express\Exceptions\HttpException;
 use Flex\Express\Exceptions\InvalidArgumentException;
 use GuzzleHttp\Exception\GuzzleException;
 
-class Kdniao extends Express
+class Kdniao
 {
     protected $api = 'http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx';
+    protected $app_id;
+    protected $app_key;
+
+    /**
+     * Kuaidi100 constructor.
+     * @param $app_id
+     * @param $app_key
+     */
+    public function __construct($app_id, $app_key)
+    {
+        $this->app_id = $app_id;
+        $this->app_key = $app_key;
+    }
 
     /**
      * 快递查询

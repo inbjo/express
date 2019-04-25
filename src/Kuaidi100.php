@@ -7,9 +7,22 @@ use Flex\Express\Exceptions\HttpException;
 use Flex\Express\Exceptions\InvalidArgumentException;
 use GuzzleHttp\Exception\GuzzleException;
 
-class Kuaidi100 extends Express
+class Kuaidi100
 {
     protected $api = 'https://poll.kuaidi100.com/poll/query.do';
+    protected $app_id;
+    protected $app_key;
+
+    /**
+     * Kuaidi100 constructor.
+     * @param $app_id
+     * @param $app_key
+     */
+    public function __construct($app_id, $app_key)
+    {
+        $this->app_id = $app_id;
+        $this->app_key = $app_key;
+    }
 
     /**
      * 快递查询
