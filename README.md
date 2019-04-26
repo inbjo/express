@@ -3,6 +3,10 @@
 <p align="center">支持快递鸟、快递100的快递查询SDK</p>
 
 [![Build Status](https://travis-ci.org/inbjo/express.svg?branch=master)](https://travis-ci.org/inbjo/express)
+[![StyleCI build status](https://github.styleci.io/repos/178779366/shield)](https://github.styleci.io/repos/178779366)
+[![Latest Stable Version](https://poser.pugx.org/flex/express/v/stable)](https://packagist.org/packages/flex/express)
+[![Total Downloads](https://poser.pugx.org/flex/express/downloads)](https://packagist.org/packages/flex/express)
+[![License](https://poser.pugx.org/flex/express/license)](https://packagist.org/packages/flex/express)
 
 
 ## 安装
