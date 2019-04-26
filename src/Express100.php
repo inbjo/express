@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the flex/express.
+ *
+ * (c) Flex<2345@mail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Flex\Express;
 
@@ -11,12 +19,16 @@ use GuzzleHttp\Exception\GuzzleException;
 class Express100
 {
     protected $api = 'https://poll.kuaidi100.com/poll/query.do';
+
     protected $app_id;
+
     protected $app_key;
+
     protected $guzzleOptions = [];
 
     /**
      * Kuaidi100 constructor.
+     *
      * @param $app_id
      * @param $app_key
      */
@@ -27,11 +39,14 @@ class Express100
     }
 
     /**
-     * 快递查询
+     * 快递查询.
+     *
      * @param string $tracking_code 快递单号
      * @param string $shipping_code 物流公司单号
      * @param string $phone
+     *
      * @return string
+     *
      * @throws InvalidArgumentException
      * @throws HttpException
      */
@@ -51,14 +66,14 @@ class Express100
             throw new InvalidArgumentException('Current ShippingCode is not support');
         }
 
-        if ($shipping_code == 'shunfeng' && empty($phone)) {
+        if ('shunfeng' == $shipping_code && empty($phone)) {
             throw new InvalidArgumentException('This Order Need PhoneNumber');
         }
 
         $post['customer'] = $this->app_id;
         $data = [
             'com' => $shipping_code,
-            'num' => $tracking_code
+            'num' => $tracking_code,
         ];
 
         if (!empty($mobile)) {
@@ -66,11 +81,11 @@ class Express100
         }
 
         $post['param'] = json_encode($data);
-        $post['sign'] = strtoupper(md5($post['param'] . $this->app_key . $post['customer']));
+        $post['sign'] = strtoupper(md5($post['param'].$this->app_key.$post['customer']));
 
         try {
             $response = $this->getHttpClient()->request('POST', $this->api, [
-                'form_params' => $post
+                'form_params' => $post,
             ])->getBody()->getContents();
         } catch (GuzzleException $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
@@ -103,5 +118,3 @@ class Express100
         $this->guzzleOptions = $options;
     }
 }
-
-

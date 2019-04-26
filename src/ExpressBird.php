@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the flex/express.
+ *
+ * (c) Flex<2345@mail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Flex\Express;
 
@@ -11,12 +19,16 @@ use GuzzleHttp\Exception\GuzzleException;
 class ExpressBird
 {
     protected $api = 'http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx';
+
     protected $app_id;
+
     protected $app_key;
+
     protected $guzzleOptions = [];
 
     /**
      * Kuaidi100 constructor.
+     *
      * @param $app_id
      * @param $app_key
      */
@@ -27,11 +39,14 @@ class ExpressBird
     }
 
     /**
-     * 快递查询
+     * 快递查询.
+     *
      * @param string $tracking_code 快递单号
      * @param string $shipping_code 物流公司编号
-     * @param string $order_code 订单编号(选填)
+     * @param string $order_code    订单编号(选填)
+     *
      * @return string
+     *
      * @throws InvalidArgumentException
      * @throws HttpException
      */
@@ -63,12 +78,12 @@ class ExpressBird
             'RequestType' => '1002',
             'RequestData' => urlencode($requestData),
             'DataType' => '2',
-            'DataSign' => $this->encrypt($requestData, $this->app_key)
+            'DataSign' => $this->encrypt($requestData, $this->app_key),
         );
 
         try {
             $response = $this->getHttpClient()->request('POST', $this->api, [
-                'form_params' => $post
+                'form_params' => $post,
             ])->getBody()->getContents();
         } catch (GuzzleException $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
@@ -78,14 +93,16 @@ class ExpressBird
     }
 
     /**
-     * 数据签名
+     * 数据签名.
+     *
      * @param $data
      * @param $appkey
+     *
      * @return string
      */
     private function encrypt($data, $appkey)
     {
-        return urlencode(base64_encode(md5($data . $appkey)));
+        return urlencode(base64_encode(md5($data.$appkey)));
     }
 
     /**
@@ -111,5 +128,4 @@ class ExpressBird
     {
         $this->guzzleOptions = $options;
     }
-
 }
