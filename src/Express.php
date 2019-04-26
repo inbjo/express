@@ -19,7 +19,7 @@ class Express
      * @param string $type
      * @throws InvalidArgumentException
      */
-    public function __construct($app_id, $app_key, $type = 'kuaidi100')
+    public function __construct($app_id, $app_key, $type = 'express100')
     {
         if (empty($app_id)) {
             throw new InvalidArgumentException('APP Id Can not be empty');
@@ -29,7 +29,7 @@ class Express
             throw new InvalidArgumentException('APP key Can not be empty');
         }
 
-        if (!in_array(strtolower($type), ['kuaidi100', 'kdniao'])) {
+        if (!in_array(strtolower($type), ['express100', 'expressbird'])) {
             throw new InvalidArgumentException('Unsupported Type');
         }
 
@@ -49,23 +49,23 @@ class Express
      */
     public function track($tracking_code, $shipping_code, $additional = [])
     {
-        if ($this->type == 'kuaidi100') {
+        if ($this->type == 'express100') {
             if (isset($additional['phone'])) {
                 $phone = $additional['phone'];
             } else {
                 $phone = '';
             }
-            $express = new Kuaidi100($this->app_id, $this->app_key);
+            $express = new Express100($this->app_id, $this->app_key);
             return $express->track($tracking_code, $shipping_code, $phone);
         }
 
-        if ($this->type == 'kdniao') {
+        if ($this->type == 'expressbird') {
             if (isset($additional['order_code'])) {
                 $order_code = $additional['order_code'];
             } else {
                 $order_code = '';
             }
-            $express = new Kdniao($this->app_id, $this->app_key);
+            $express = new ExpressBird($this->app_id, $this->app_key);
             return $express->track($tracking_code, $shipping_code, $order_code);
         }
 

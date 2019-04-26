@@ -1,8 +1,8 @@
 <?php
 $header = <<<EOF
-This file is part of the flex/express.
+This file is part of the Flex/Express.
 
-(c) flex <2345@mail.com>
+(c) Flex <2345@mail.com>
 
 This source file is subject to the MIT license that is bundled.
 EOF;
