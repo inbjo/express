@@ -76,8 +76,8 @@ class Express100
             'num' => $tracking_code,
         ];
 
-        if (!empty($mobile)) {
-            $data['mobiletelephone'] = $phone;
+        if (!empty($phone)) {
+            $data['phone'] = $phone;
         }
 
         $post['param'] = json_encode($data);
